@@ -14,14 +14,14 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("love_sandwiches")
 
 """
-# this commented section tests the connection to the google sheet by printing data to the terminal.
-
-sales = SHEET.worksheet("sales")
-
-data = sales.get_all_values()
-
-print(data)
+this commented section tests the connection to the google sheet by printing data to the terminal.
 """
+# sales = SHEET.worksheet("sales")
+
+# data = sales.get_all_values()
+
+# print(data)
+
 
 def get_sales_data():
     """
@@ -63,23 +63,37 @@ def validate_data(values):
     
     return True
 
-def update_sales_worksheet(data):
-    """
-    Updates sales worksheet, adds new row with the list data provided.
-    """
-    print("Updating sales worksheet...\n")
-    sales_worksheet = SHEET.worksheet("sales")
-    sales_worksheet.append_row(data)
-    print("Sales worksheet updated successfully.\n")
+"""
+The following two functions have been refactored into a single function called update_worksheet,
+which takes in the data and the name of the worksheet to update as parameters.
+"""
+# def update_sales_worksheet(data):
+#     """
+#     Updates sales worksheet, adds new row with the list data provided.
+#     """
+#     print("Updating sales worksheet...\n")
+#     sales_worksheet = SHEET.worksheet("sales")
+#     sales_worksheet.append_row(data)
+#     print("Sales worksheet updated successfully.\n")
 
-def update_surplus_worksheet(data):
+# def update_surplus_worksheet(data):
+#     """
+#     Updates surplus worksheet, adds new row with the list data provided.
+#     """
+#     print("Updating surplus worksheet...\n")
+#     surplus_worksheet = SHEET.worksheet("surplus")
+#     surplus_worksheet.append_row(data)
+#     print("Surplus worksheet updated successfully.\n")
+
+def update_worksheet(data, worksheet):
     """
-    Updates surplus worksheet, adds new row with the list data provided.
+    Receives a list of integers to be inserted into a worksheet.
+    Updates the relevant worksheet with the data provided.
     """
-    print("Updating surplus worksheet...\n")
-    surplus_worksheet = SHEET.worksheet("surplus")
-    surplus_worksheet.append_row(data)
-    print("Surplus worksheet updated successfully.\n")
+    print(f"Updating {worksheet} worksheet...\n")
+    worksheet_to_update = SHEET.worksheet(worksheet)
+    worksheet_to_update.append_row(data)
+    print(f"{worksheet} worksheet updated successfully.\n")
 
 def calculate_surplus_data(sales_row):
     """
@@ -104,9 +118,9 @@ def calculate_surplus_data(sales_row):
 def main():
     data = get_sales_data()
     sales_data = [int(num) for num in data]
-    update_sales_worksheet(sales_data)
+    update_worksheet(sales_data, "sales")
     new_surplus_data = calculate_surplus_data(sales_data)
-    update_surplus_worksheet(new_surplus_data)
+    update_worksheet(new_surplus_data, "surplus")
 
 print("Welcome to Love Sandwiches Data Automation\n")
 main()
