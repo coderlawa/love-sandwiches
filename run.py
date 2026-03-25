@@ -140,3 +140,5 @@ print("Welcome to Love Sandwiches Data Automation\n")
 #main()
 
 sales_columns = get_last_5_entries_sales()
+
+# this is a test to see if I have conntected to this repo from my other device
